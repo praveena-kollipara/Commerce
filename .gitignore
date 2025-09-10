@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Commerce_Project.Server/bin/Debug/net8.0
+/Commerce_Project.Server/obj
+/commerce_project.client/obj/Debug
+/.vs

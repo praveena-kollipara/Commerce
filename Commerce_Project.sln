@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "commerce_project.client", "commerce_project.client\commerce_project.client.esproj", "{E921AD98-CCAE-C133-5B9F-05F4059B9E02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commerce_Project.Server", "Commerce_Project.Server\Commerce_Project.Server.csproj", "{13902740-2BCA-4F9E-8123-A31A466DC0FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E921AD98-CCAE-C133-5B9F-05F4059B9E02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E921AD98-CCAE-C133-5B9F-05F4059B9E02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E921AD98-CCAE-C133-5B9F-05F4059B9E02}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E921AD98-CCAE-C133-5B9F-05F4059B9E02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E921AD98-CCAE-C133-5B9F-05F4059B9E02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E921AD98-CCAE-C133-5B9F-05F4059B9E02}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{13902740-2BCA-4F9E-8123-A31A466DC0FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13902740-2BCA-4F9E-8123-A31A466DC0FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13902740-2BCA-4F9E-8123-A31A466DC0FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13902740-2BCA-4F9E-8123-A31A466DC0FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9E3EF20D-6A17-4712-A26A-848A0533FDF5}
+	EndGlobalSection
+EndGlobal
