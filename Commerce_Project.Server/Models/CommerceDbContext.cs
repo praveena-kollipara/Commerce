@@ -37,6 +37,7 @@ public partial class CommerceDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__Categori__3214EC079898933D");
 
+            entity.Property(e => e.Description).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(100);
         });
 
@@ -72,8 +73,16 @@ public partial class CommerceDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__Products__3214EC076AEDD51E");
 
+            entity.Property(e => e.Brand).HasMaxLength(100);
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.PublishedDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Rating)
+                .HasDefaultValue(0m)
+                .HasColumnType("decimal(3, 2)");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
