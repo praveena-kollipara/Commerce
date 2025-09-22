@@ -4,7 +4,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { useNavigate, useLocation } from 'react-router-dom'
 
-const tabs = [{ label: "Orders", path: "/Orders" },{ label: "Products", path : "/Products" }, { label : "Product Details", path :"/ProductDetails" } ]
+const tabs = [{ label: "Products", path : "/Products" }, { label : "Product Details", path :"/ProductDetails" } ]
 function NavTabs() {
 
     const navigate = useNavigate();

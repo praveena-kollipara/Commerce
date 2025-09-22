@@ -20,6 +20,34 @@ namespace Commerce_Project.Server.Controllers
             return Ok(categories);
         }
 
+        [HttpGet("ListOfCategories")]
+        public async Task<IActionResult> GetCategories()
+        {
+            var items = await dbcontext.Categories.Select(x => x.Name).ToListAsync();
+            return Ok(items);
+        }
+        [HttpGet("ProductsBasedOnCategory/{categoryname}")]
+        public async Task<IActionResult> GetProductsBasedOnCategory(string categoryname)
+        {
+            var record = await dbcontext.Categories.FirstOrDefaultAsync(x => x.Name == categoryname);
+            if (record == null)
+            {
+                return NotFound();
+            }
+            var items = await dbcontext.Products.Where(x=>x.CategoryId == record.Id).Select(
+                x => new ProductDTO
+                {
+                    Name = x.Name,
+                    Description = x.Description,
+                    Price = x.Price,
+                    StockQuantity = x.StockQuantity,
+                    //Brand = x.Brand,
+                    //PublishedDate = x.PublishedDate,
+                    //Rating = x.Rating,
+                    //IsActive = x.IsActive
+                }).ToListAsync();
+                return Ok(items);
+        }
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Category items)
         {

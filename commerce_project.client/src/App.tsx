@@ -3,14 +3,18 @@ import './App.css';
 import './index.css'
 import MainMenu from "../src/common/MainMenu/MainMenu"
 import NavTabs from './common/MainMenu/NavTabs';
+import FindProduct from "./components/FindProducts"
+import { Routes, Route } from "react-router-dom"
 
 
 const App: React.FC = () => {
     return (
         <div>
             <MainMenu />
-            <NavTabs/>
-            <h1>Hello</h1>
+            <NavTabs />
+            <Routes>
+                <Route path="/Products" element={<FindProduct />} />
+            </Routes>
         </div>
     );
 };
