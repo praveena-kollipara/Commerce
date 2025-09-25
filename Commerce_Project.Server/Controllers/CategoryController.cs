@@ -26,7 +26,7 @@ namespace Commerce_Project.Server.Controllers
             var items = await dbcontext.Categories.Select(x => x.Name).ToListAsync();
             return Ok(items);
         }
-        [HttpGet("ProductsBasedOnCategory/{categoryname}")]
+        [HttpGet("ProductsBasedOnCategory")]
         public async Task<IActionResult> GetProductsBasedOnCategory(string categoryname)
         {
             var record = await dbcontext.Categories.FirstOrDefaultAsync(x => x.Name == categoryname);
