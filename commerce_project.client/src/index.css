@@ -7,3 +7,11 @@ body {
     box-sizing: border-box
 }
 
+button{
+    height:30px;
+    padding: 0 16px;
+    background-color:cornflowerblue;
+    color:snow;
+    border-radius:8px
+}
+

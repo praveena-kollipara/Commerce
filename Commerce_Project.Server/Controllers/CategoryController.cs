@@ -27,26 +27,40 @@ namespace Commerce_Project.Server.Controllers
             return Ok(items);
         }
         [HttpGet("ProductsBasedOnCategory")]
-        public async Task<IActionResult> GetProductsBasedOnCategory(string categoryname)
+        public async Task<IActionResult> GetProductsBasedOnCategory(string? categoryname=null, string? searchparam=null)
         {
-            var record = await dbcontext.Categories.FirstOrDefaultAsync(x => x.Name == categoryname);
-            if (record == null)
-            {
-                return NotFound();
-            }
-            var items = await dbcontext.Products.Where(x=>x.CategoryId == record.Id).Select(
+           
+            var items =  dbcontext.Products.AsQueryable();
+            if (categoryname != null) {
+                var record = await dbcontext.Categories.FirstOrDefaultAsync(x => x.Name == categoryname);
+                if (record == null)
+                {
+                    return NotFound();
+                }
+                var result = items.Where(x=>x.CategoryId == record.Id).Select(
                 x => new ProductDTO
                 {
                     Name = x.Name,
                     Description = x.Description,
                     Price = x.Price,
                     StockQuantity = x.StockQuantity,
+                    Id=x.Id
                     //Brand = x.Brand,
                     //PublishedDate = x.PublishedDate,
                     //Rating = x.Rating,
                     //IsActive = x.IsActive
-                }).ToListAsync();
+                });
+                return Ok(result);
+            }
+            else if (searchparam!=null)
+            {
+                var item = await dbcontext.Products.Where(x=>x.Name.Contains(searchparam)).ToListAsync();
+                return Ok(item);
+            }
+            else
+            {
                 return Ok(items);
+            }
         }
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Category items)

@@ -1,7 +1,7 @@
 import  React, {useState, useEffect} from 'react';
-import InputLabel from '@mui/material/InputLabel';
+
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
+import '../index.css'
 import Select from '@mui/material/Select';
 import Box from '@mui/material/Box'
 import type { SelectChangeEvent } from '@mui/material/Select';
@@ -9,6 +9,7 @@ import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 import type { IProducts } from '../common/Inteface'
 
 import axios from "axios";
+import { TextField } from '@mui/material';
 
 
 
@@ -16,9 +17,11 @@ export default function FindProduct() {
 
     const [Categories, setCategories] = useState<string[]>([]);
 
-    const [selectedCategory, setSelectedCategory] = React.useState<string>('');
+    const [selectedCategory, setSelectedCategory] = React.useState<string>("");
 
     const [rows, setRows] = useState<IProducts[]>([]);
+    const [searchItem, setSearchItem] = useState('');
+    
 
     const handleChange = (event: SelectChangeEvent) => {
         setSelectedCategory(event.target.value);
@@ -27,53 +30,83 @@ export default function FindProduct() {
     useEffect(() => {
         axios.get("https://localhost:7142/api/Category/ListOfCategories")
             .then(response => setCategories(response.data))
-         
-        .catch ((err)=> {
-            console.log("Error fecthing categories", err);
-        })
+
+            .catch((err) => {
+                console.log("Error fecthing categories", err);
+            })
     }, []);
 
-    useEffect(() => {
-        const getRows = async () => {
-            await axios.get("https://localhost:7142/api/Category/ProductsBasedOnCategory", {
-                params: { categoryname: selectedCategory }
-                })
-              .then(res => setRows(res.data))
-              .catch((err) => {
-                    console.log("Error fetching Data", err)
-              })
+    const getRows = async () => {
+        try {
+            const res = await axios.get("https://localhost:7142/api/Category/ProductsBasedOnCategory", {
+                params: { categoryname: selectedCategory, searchparam: searchItem }
+            })
+            console.log(res.data);
+            setRows(res.data);
+
         }
-        getRows();
+        catch (err) {
+            console.log("Error fetching Data", err)
+        }
+
+    }
+   
+
+    useEffect(() => {
+        getRows();  
     }, [selectedCategory])
 
-   
+    const handleSearch = async () => {
+        await getRows();
+    }
 
    
 
     const columns: GridColDef<(typeof rows)[number]>[] = [
-        { field: 'name', headerName: 'Name', width: 90 },
+        { field: 'name', headerName: 'Name', width: 150 },
         { field: 'price', headerName: 'Price', width: 90 },
-        { field: 'description', headerName: 'Description', width: 90 }
+        { field: 'description', headerName: 'Description', width: 250 }
     ];
 
 
     return (
         <div>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-autowidth-label">Categories</InputLabel>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "5px", marginTop:"10px",marginLeft:"10px" }}>
+                <label id="selectCategory">Product Categories</label>
                 <Select
-                    labelId="demo-simple-select-autowidth-label"
-                    id="demo-simple-select-autowidth"
+                    id="selectCategory"
                     value={selectedCategory}
                     onChange={handleChange}
-                    autoWidth
-                    label="Category"
+                    style={{width: "250px", height:"50px"} }
+
+
                 >
-                    {Categories.map((item, index) => (
-                        <MenuItem value={item} key={index}>{item}</MenuItem>
+                    <MenuItem value="">
+                        <em >Select</em>
+                    </MenuItem>
+                    {Categories.map((item) => (
+                        <MenuItem value={item} key={item}>{item}</MenuItem>
                     ))}
                 </Select>
-            </FormControl>
+            </div>
+
+               
+
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", marginRight: "15px", marginBottom:"10px" }}>
+                <TextField onChange={(e) => setSearchItem(e.target.value)}
+                    sx={{
+                        width: '300px',     // wider field
+                        height: '40px',     // controls outer height
+                        input: {
+                            padding: '8px 12px', // controls inner input padding
+                            fontSize: '14px'     // optional: smaller text
+                        },
+                        marginRight: '15px'
+                    }}
+                    placeholder="Search products..." />
+                <button onClick={handleSearch} style={{ marginBottom:"10px" }} >Search</button>
+            </div>
+            
             <Box sx={{ height: 400, width: '100%' }}>
                 <DataGrid
                     rows={rows}
@@ -85,7 +118,7 @@ export default function FindProduct() {
                             },
                         },
                     }}
-                    pageSizeOptions={[5]}
+                    pageSizeOptions={[10]}
                     checkboxSelection
                     disableRowSelectionOnClick
                 />

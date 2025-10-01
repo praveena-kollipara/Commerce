@@ -1,4 +1,4 @@
-
+import React, { useState } from 'react';
 import './App.css';
 import './index.css'
 import MainMenu from "../src/common/MainMenu/MainMenu"
@@ -8,6 +8,8 @@ import { Routes, Route } from "react-router-dom"
 
 
 const App: React.FC = () => {
+    // const [showTabs, setShowTabs] = useState(false);
+
     return (
         <div>
             <MainMenu />
