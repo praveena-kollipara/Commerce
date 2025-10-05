@@ -16,11 +16,15 @@ namespace Commerce_Project.Server.Controllers
             dbcontext = _context;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("productById/{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            var products = await dbcontext.Products.ToListAsync();
-            return Ok(products);
+            var product = await dbcontext.Products.FirstOrDefaultAsync(x=>x.Id==id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return Ok(new {data= product , success=true});
         }
     }
 }
