@@ -8,13 +8,30 @@ import Button from '@mui/material/Button';
 import logo from "../../assets/logo.png"
 import { useNavigate } from "react-router-dom"
 
+interface menuItem {
+    name: string;
+    path: string;
+}
+
 const menuItems = [
     { name: "Home", path: "/Home" },
     { name: "Orders", path: "/Orders" },
     { name: "Cart", path: "/Cart" }
 ]
-export default function MainMenu() {
+
+interface MainMenuProps {
+    onSelect: () => void;
+}
+export default function MainMenu({ onSelect }: MainMenuProps ) {
     const navigate = useNavigate();
+    const handleChange = (item: menuItem) => {
+        navigate(item.path);
+        if (item.name === "Home") {
+            navigate("/Products");
+            onSelect();
+        }
+        
+    }
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -29,7 +46,7 @@ export default function MainMenu() {
                     
                     <Box>
                         {menuItems.map((item) => (
-                            <Button color="inherit" key={item.path} onClick={() => navigate(item.path)}>{item.name}</Button>  
+                            <Button color="inherit" key={item.path} onClick={() => handleChange(item)}>{item.name}</Button>  
                              
                         ))}
                        

@@ -13,13 +13,19 @@ import ProductDetails from './components/ProductDetails';
 
 const App: React.FC = () => {
     // const [showTabs, setShowTabs] = useState(false);
-    const [productInfo, setProductInfo] = useState<number|null>(null);
-
+    const [productInfo, setProductInfo] = useState<number | null>(null);
+    const [showNavTabs, setShowNavTabs] = useState(false);
     return (
         <div>
-            <MainMenu />
-            <NavTabs />
+            <MainMenu onSelect={() => setShowNavTabs(true)} />
+            {showNavTabs && (
+                <>
+                    <NavTabs />
+                </>
+            )}
+            
             <Routes>
+               
                 <Route path="/Products" element={<FindProducts onSelect={setProductInfo} />} />
                 <Route path="/ProductDetails" element={<ProductDetails id={productInfo} />} />
             </Routes>
