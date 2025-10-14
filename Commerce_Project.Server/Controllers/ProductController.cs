@@ -24,7 +24,33 @@ namespace Commerce_Project.Server.Controllers
             {
                 return NotFound();
             }
+            //product.Category = await dbcontext.Categories.Where(x => x.Id = product.CategoryId);
             return Ok(new {data= product , success=true});
+        }
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] Product data)
+        {
+            if(!ModelState.IsValid) {
+                return BadRequest(ModelState);
+             }
+            var item = await dbcontext.Products.FindAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            item.Id = data.Id;
+            item.Brand = data.Brand;
+            item.Name = data.Name;
+            item.Description = data.Description;
+            item.Price = data.Price;
+            item.Rating = data.Rating;
+            item.StockQuantity = data.StockQuantity;
+            item.IsActive = data.IsActive;
+
+
+            await dbcontext.SaveChangesAsync();
+            return Ok(new {data = item , success=true});
+
         }
     }
 }

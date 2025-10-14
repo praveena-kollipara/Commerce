@@ -24,8 +24,4 @@ public partial class Product
     public decimal? Rating { get; set; }
 
     public bool? IsActive { get; set; }
-
-    public virtual Category? Category { get; set; }
-
-    public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 }

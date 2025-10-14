@@ -48,10 +48,6 @@ public partial class CommerceDbContext : DbContext
             entity.Property(e => e.OrderDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Orders__UserId__45F365D3");
         });
 
         modelBuilder.Entity<OrderItem>(entity =>
@@ -59,14 +55,6 @@ public partial class CommerceDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__OrderIte__3214EC07B931E922");
 
             entity.Property(e => e.UnitPrice).HasColumnType("decimal(10, 2)");
-
-            entity.HasOne(d => d.Order).WithMany(p => p.OrderItems)
-                .HasForeignKey(d => d.OrderId)
-                .HasConstraintName("FK__OrderItem__Order__49C3F6B7");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.OrderItems)
-                .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("FK__OrderItem__Produ__4AB81AF0");
         });
 
         modelBuilder.Entity<Product>(entity =>
@@ -83,10 +71,6 @@ public partial class CommerceDbContext : DbContext
             entity.Property(e => e.Rating)
                 .HasDefaultValue(0m)
                 .HasColumnType("decimal(3, 2)");
-
-            entity.HasOne(d => d.Category).WithMany(p => p.Products)
-                .HasForeignKey(d => d.CategoryId)
-                .HasConstraintName("FK__Products__Catego__4316F928");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -105,10 +89,6 @@ public partial class CommerceDbContext : DbContext
             entity.Property(e => e.Email).HasMaxLength(100);
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.PasswordHash).HasMaxLength(255);
-
-            entity.HasOne(d => d.Role).WithMany(p => p.Users)
-                .HasForeignKey(d => d.RoleId)
-                .HasConstraintName("FK__Users__RoleId__3E52440B");
         });
 
         OnModelCreatingPartial(modelBuilder);
