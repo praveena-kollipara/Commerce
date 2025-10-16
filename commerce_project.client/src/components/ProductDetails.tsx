@@ -39,6 +39,18 @@ const ProductDetails: React.FC<ProductDeatilsProps> = ({ id }) => {
         })
         console.log("updated object:", productsData)
     }
+    const handleSave = async () => {
+        try {
+            const response = await axios.put(`https://localhost:7142/api/Product/update/${id}`, productsData)
+            const result = response.data
+            if (result.success) {
+                setProductsData(result.data)
+            }
+        }
+        catch (err) {
+            console.log("error is :", err);
+        }
+    }
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: "20px", padding:"25px" }}>
             {/* Brand and Product Name */}
@@ -134,7 +146,7 @@ const ProductDetails: React.FC<ProductDeatilsProps> = ({ id }) => {
                 </div>
             </div>
             <div style={{ display: "flex", alignItems: "center", justifyContent:"center", gap:"5px" }}>
-                <button>Save</button>
+                <button onClick={handleSave }>Save</button>
                 <button>Undo</button>
                 <button>Delete</button>
             </div>

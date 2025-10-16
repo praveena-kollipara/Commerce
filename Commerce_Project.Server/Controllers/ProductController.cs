@@ -38,7 +38,7 @@ namespace Commerce_Project.Server.Controllers
             {
                 return NotFound();
             }
-            item.Id = data.Id;
+            //item.Id = data.Id;
             item.Brand = data.Brand;
             item.Name = data.Name;
             item.Description = data.Description;
@@ -49,7 +49,7 @@ namespace Commerce_Project.Server.Controllers
 
 
             await dbcontext.SaveChangesAsync();
-            return Ok(new {data = item , success=true});
+            return Ok(new {data = item ,success = true});
 
         }
     }
