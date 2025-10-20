@@ -71,6 +71,9 @@ public partial class CommerceDbContext : DbContext
             entity.Property(e => e.Rating)
                 .HasDefaultValue(0m)
                 .HasColumnType("decimal(3, 2)");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+            entity.Property(e => e.IsDeleted)
+              .HasDefaultValue(false);
         });
 
         modelBuilder.Entity<Role>(entity =>

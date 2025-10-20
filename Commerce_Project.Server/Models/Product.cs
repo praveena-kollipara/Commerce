@@ -24,4 +24,6 @@ public partial class Product
     public decimal? Rating { get; set; }
 
     public bool? IsActive { get; set; }
+
+    public bool IsDeleted {get; set; }
 }

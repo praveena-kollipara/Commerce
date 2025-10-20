@@ -19,20 +19,20 @@ namespace Commerce_Project.Server.Controllers
         [HttpGet("productById/{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var product = await dbcontext.Products.FirstOrDefaultAsync(x=>x.Id==id);
+            var product = await dbcontext.Products.FirstOrDefaultAsync(x => x.Id == id);
             if (product == null)
             {
                 return NotFound();
             }
             //product.Category = await dbcontext.Categories.Where(x => x.Id = product.CategoryId);
-            return Ok(new {data= product , success=true});
+            return Ok(new { data = product, success = true });
         }
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] Product data)
         {
-            if(!ModelState.IsValid) {
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
-             }
+            }
             var item = await dbcontext.Products.FindAsync(id);
             if (item == null)
             {
@@ -49,8 +49,21 @@ namespace Commerce_Project.Server.Controllers
 
 
             await dbcontext.SaveChangesAsync();
-            return Ok(new {data = item ,success = true});
+            return Ok(new { data = item, success = true });
 
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var item = await dbcontext.Products.FindAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            item.IsDeleted = true;
+            await dbcontext.SaveChangesAsync();
+            return Ok(new { data = item, success = true });
         }
     }
 }

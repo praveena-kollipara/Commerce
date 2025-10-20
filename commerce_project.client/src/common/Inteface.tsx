@@ -16,6 +16,7 @@ export interface IProducts {
     publishedDate: string
     rating: number
     isActive: boolean
+    IsDeleted: boolean
     //category: any
     //orderItems: any[]
 }

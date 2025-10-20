@@ -2,6 +2,7 @@ import type { IProducts } from "../common/Inteface";
 import React, { useState, useEffect } from "react"
 import axios from 'axios'
 import { TextField, Checkbox } from "@mui/material";
+import { useNavigate } from "react-router-dom"
 
 interface ProductDeatilsProps {
     id: number | null
@@ -10,6 +11,7 @@ interface ProductDeatilsProps {
 const ProductDetails: React.FC<ProductDeatilsProps> = ({ id }) => {
 
     const [productsData, setProductsData] = useState<IProducts | null>(null)
+    const navigate = useNavigate();
 
     const fetchData = async () => {
         try {
@@ -37,7 +39,7 @@ const ProductDetails: React.FC<ProductDeatilsProps> = ({ id }) => {
             }
 
         })
-        console.log("updated object:", productsData)
+       
     }
     const handleSave = async () => {
         try {
@@ -49,6 +51,21 @@ const ProductDetails: React.FC<ProductDeatilsProps> = ({ id }) => {
         }
         catch (err) {
             console.log("error is :", err);
+        }
+    }
+    const handleDelete = async (id: number | undefined) => {
+        if (id === undefined) {
+            return;
+        }
+        try {
+            const response = await axios.delete(`https://localhost:7142/api/Product/delete/${id}`);
+            const result = response.data
+            if (result.success) {
+                navigate("/Products")
+            }
+        }
+        catch (err) {
+            console.error("error deleting record",err)
         }
     }
     return (
@@ -148,10 +165,10 @@ const ProductDetails: React.FC<ProductDeatilsProps> = ({ id }) => {
             <div style={{ display: "flex", alignItems: "center", justifyContent:"center", gap:"5px" }}>
                 <button onClick={handleSave }>Save</button>
                 <button>Undo</button>
-                <button>Delete</button>
+                <button onClick={()=>handleDelete(productsData?.id)}>Delete</button>
             </div>
         </div>
-  );
+  ); 
 }
 
 export default ProductDetails;

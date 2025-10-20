@@ -30,7 +30,8 @@ namespace Commerce_Project.Server.Controllers
         public async Task<IActionResult> GetProductsBasedOnCategory(string? categoryname=null, string? searchparam=null)
         {
            
-            var items =  dbcontext.Products.AsQueryable();
+            var items =  dbcontext.Products.Where(x=>x.IsDeleted == false).AsQueryable();
+            
             if (categoryname != null) {
                 var record = await dbcontext.Categories.FirstOrDefaultAsync(x => x.Name == categoryname);
                 if (record == null)
@@ -54,7 +55,7 @@ namespace Commerce_Project.Server.Controllers
             }
             else if (searchparam!=null)
             {
-                var item = await dbcontext.Products.Where(x=>x.Name.Contains(searchparam)).ToListAsync();
+                var item = await dbcontext.Products.Where(x=> x.IsDeleted == false && x.Name.Contains(searchparam)).ToListAsync();
                 return Ok(item);
             }
             else
