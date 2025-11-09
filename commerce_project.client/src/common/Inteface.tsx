@@ -1,9 +1,4 @@
-export interface ICategories {
-    id: number
-    name: string
-    description: string
-    //products: any[]
-}
+
 
 export interface IProducts {
     id: number
@@ -19,4 +14,10 @@ export interface IProducts {
     IsDeleted: boolean
     //category: any
     //orderItems: any[]
+}
+
+export interface ICategories {
+    id: number
+    name: string
+    description: string
 }

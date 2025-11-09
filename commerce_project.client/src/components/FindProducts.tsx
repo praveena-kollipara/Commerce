@@ -6,7 +6,7 @@ import Select from '@mui/material/Select';
 import Box from '@mui/material/Box'
 import type { SelectChangeEvent } from '@mui/material/Select';
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
-import type { IProducts } from '../common/Inteface'
+import type { IProducts, ICategories } from '../common/Inteface'
 import axios from "axios";
 import { TextField } from '@mui/material';
 import type { GridRowParams } from '@mui/x-data-grid';
@@ -14,9 +14,10 @@ import type { GridRowParams } from '@mui/x-data-grid';
 import type { GridRowSelectionModel } from '@mui/x-data-grid';
 interface FindProductsProps {
     onSelect: (id: number | null) => void
+    onCategorySelect: (cat_Id: number | null) =>void
 }
 
-const FindProducts: React.FC<FindProductsProps> = ({ onSelect }) => {
+const FindProducts: React.FC<FindProductsProps> = ({ onSelect, onCategorySelect }) => {
 
     const [Categories, setCategories] = useState<string[]>([]);
 
@@ -25,6 +26,8 @@ const FindProducts: React.FC<FindProductsProps> = ({ onSelect }) => {
     const [rows, setRows] = useState<IProducts[]>([]);
     const [searchItem, setSearchItem] = useState('');
     const [selectedItem, setSelectedItem] = useState<GridRowSelectionModel>();
+    const [categoriesInfo, setCategoriesInfo] = useState<ICategories[]>([])
+    const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
 
     const handleChange = (event: SelectChangeEvent) => {
         setSelectedCategory(event.target.value);
@@ -33,11 +36,18 @@ const FindProducts: React.FC<FindProductsProps> = ({ onSelect }) => {
 
     useEffect(() => {
         axios.get("https://localhost:7142/api/Category/ListOfCategories")
-            .then(response => setCategories(response.data))
+            .then(response => {
+                const categoryList = response.data;
+                setCategories(categoryList);
 
-            .catch((err) => {
-                console.log("Error fecthing categories", err);
+              
+                if (categoryList.length > 0) {
+                    setSelectedCategory(categoryList[0]);
+                }
             })
+            .catch((err) => {
+                console.log("Error fetching categories", err);
+            });
     }, []);
 
     const getRows = async () => {
@@ -45,7 +55,7 @@ const FindProducts: React.FC<FindProductsProps> = ({ onSelect }) => {
             const res = await axios.get("https://localhost:7142/api/Category/ProductsBasedOnCategory", {
                 params: { categoryname: selectedCategory, searchparam: searchItem }
             })
-            console.log(res.data);
+            
             setRows(res.data);
 
         }
@@ -55,11 +65,31 @@ const FindProducts: React.FC<FindProductsProps> = ({ onSelect }) => {
 
     }
 
+    const selectedCategoryInfo = async () => {
+        try {
+            const res = await axios.get(`https://localhost:7142/api/Category/GetCategoryInfo`);
+            const result: ICategories[] = res.data;
+            setCategoriesInfo(result);
+
+            const details = result.find(item => item.name === selectedCategory);
+            if (details) {
+                const categoryid = details.id;
+                setSelectedCategoryId(categoryid);
+               
+                onCategorySelect(categoryid); 
+            }
+        } catch (err) {
+            console.log("Error fetching Data", err);
+        }
+    };
+
 
     useEffect(() => {
         getRows();
-    }, [selectedCategory])
+        selectedCategoryInfo();
+    }, [selectedCategory]);
 
+    
     const handleSearch = async () => {
         await getRows();
     }
@@ -118,7 +148,7 @@ const FindProducts: React.FC<FindProductsProps> = ({ onSelect }) => {
                     columns={columns}
                     checkboxSelection
                     onRowClick={(params: GridRowParams) => {
-                        console.log("Row clicked:", params.row.id);
+                       
                         onSelect(params.row.id);
                     }}
 

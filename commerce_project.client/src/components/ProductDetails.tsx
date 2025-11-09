@@ -6,9 +6,10 @@ import { useNavigate } from "react-router-dom"
 
 interface ProductDeatilsProps {
     id: number | null
+    cat_Id: number | null
 }
 
-const ProductDetails: React.FC<ProductDeatilsProps> = ({ id }) => {
+const ProductDetails: React.FC<ProductDeatilsProps> = ({ id, cat_Id }) => {
 
     const [productsData, setProductsData] = useState<IProducts | null>(null)
     const navigate = useNavigate();
@@ -69,7 +70,8 @@ const ProductDetails: React.FC<ProductDeatilsProps> = ({ id }) => {
         }
     }
     return (
-        <div style={{ display: "flex", flexDirection: "column", gap: "20px", padding:"25px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px", padding: "25px" }}>
+            <p>{cat_Id}</p>
             {/* Brand and Product Name */}
             <div style={{ display: "flex", gap: "80px" }}>
                 <div style={{ display: "flex", flexDirection: "column" }}>
@@ -162,9 +164,9 @@ const ProductDetails: React.FC<ProductDeatilsProps> = ({ id }) => {
                     />
                 </div>
             </div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent:"center", gap:"5px" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "5px" }}>
+                <button onClick={() => setProductsData(null)}>Add</button>
                 <button onClick={handleSave }>Save</button>
-                <button>Undo</button>
                 <button onClick={()=>handleDelete(productsData?.id)}>Delete</button>
             </div>
         </div>

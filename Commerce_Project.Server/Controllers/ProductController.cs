@@ -27,6 +27,8 @@ namespace Commerce_Project.Server.Controllers
             //product.Category = await dbcontext.Categories.Where(x => x.Id = product.CategoryId);
             return Ok(new { data = product, success = true });
         }
+       
+
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] Product data)
         {
@@ -50,6 +52,29 @@ namespace Commerce_Project.Server.Controllers
 
             await dbcontext.SaveChangesAsync();
             return Ok(new { data = item, success = true });
+
+        }
+
+        [HttpPost("AddProduct")]
+        public async Task<IActionResult> AddProduct([FromQuery] int? categoryid, [FromBody] Product data)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var product = new Product();
+            //item.Id = data.Id;
+            product.Brand = data.Brand;
+            product.Name = data.Name;
+            product.Description = data.Description;
+            product.Price = data.Price;
+            product.Rating = data.Rating;
+            product.StockQuantity = data.StockQuantity;
+            product.IsActive = data.IsActive;
+            product.CategoryId =categoryid ?? data.CategoryId;
+            dbcontext.Products.Add(product);
+            await dbcontext.SaveChangesAsync();
+            return Ok(new { data = product, success = true });
 
         }
 

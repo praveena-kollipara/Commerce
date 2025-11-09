@@ -14,6 +14,7 @@ import ProductDetails from './components/ProductDetails';
 const App: React.FC = () => {
     // const [showTabs, setShowTabs] = useState(false);
     const [productInfo, setProductInfo] = useState<number | null>(null);
+    const [isCategoryId, setIsCategoryId] = useState<number |null>(null);
     const [showNavTabs, setShowNavTabs] = useState(false);
     return (
         <div>
@@ -25,9 +26,9 @@ const App: React.FC = () => {
             )}
             
             <Routes>
-               
-                <Route path="/Products" element={<FindProducts onSelect={setProductInfo} />} />
-                <Route path="/ProductDetails" element={<ProductDetails id={productInfo} />} />
+
+                <Route path="/Products" element={<FindProducts onSelect={setProductInfo} onCategorySelect={setIsCategoryId} />} />
+                <Route path="/ProductDetails" element={<ProductDetails id={productInfo} cat_Id={isCategoryId} />} />
             </Routes>
         </div>
     );

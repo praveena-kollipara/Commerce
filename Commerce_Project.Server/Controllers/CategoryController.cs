@@ -26,6 +26,13 @@ namespace Commerce_Project.Server.Controllers
             var items = await dbcontext.Categories.Select(x => x.Name).ToListAsync();
             return Ok(items);
         }
+        [HttpGet("GetCategoryInfo")]
+        public async Task<IActionResult> GetCategoryInfo()
+        {
+            var items = await dbcontext.Categories.ToListAsync();
+            return Ok( items);
+        }
+
         [HttpGet("ProductsBasedOnCategory")]
         public async Task<IActionResult> GetProductsBasedOnCategory(string? categoryname=null, string? searchparam=null)
         {
