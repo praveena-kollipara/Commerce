@@ -12,6 +12,7 @@ interface ProductDeatilsProps {
 const ProductDetails: React.FC<ProductDeatilsProps> = ({ id, cat_Id }) => {
 
     const [productsData, setProductsData] = useState<IProducts | null>(null)
+    const [isAddSelected, setIsAddSelected] = useState(false);
     const navigate = useNavigate();
 
     const fetchData = async () => {
@@ -44,11 +45,24 @@ const ProductDetails: React.FC<ProductDeatilsProps> = ({ id, cat_Id }) => {
     }
     const handleSave = async () => {
         try {
-            const response = await axios.put(`https://localhost:7142/api/Product/update/${id}`, productsData)
-            const result = response.data
-            if (result.success) {
-                setProductsData(result.data)
+            if (isAddSelected) {
+                if (productsData && cat_Id != null) {
+                    productsData.categoryId = cat_Id;
+                }
+                const response = await axios.post(`https://localhost:7142/api/Product/AddProduct`, productsData)
+                const result = response.data
+                if (result.success) {
+                    setProductsData(result.data)
+                }
             }
+            else {
+                const response = await axios.put(`https://localhost:7142/api/Product/update/${id}`, productsData)
+                const result = response.data
+                if (result.success) {
+                    setProductsData(result.data)
+                }
+            }
+           
         }
         catch (err) {
             console.log("error is :", err);
@@ -68,6 +82,22 @@ const ProductDetails: React.FC<ProductDeatilsProps> = ({ id, cat_Id }) => {
         catch (err) {
             console.error("error deleting record",err)
         }
+    }
+    const handleNewProduct = async () => {
+        setProductsData({
+            id:0,
+            name: "",
+            description: "",
+            price: 0,
+            categoryId: 0,
+            stockQuantity: 0,
+            brand: "",
+            publishedDate: new Date().toISOString(),
+            rating: 0,
+            isActive: false,
+            IsDeleted: false
+        })
+        setIsAddSelected(true);
     }
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: "20px", padding: "25px" }}>
@@ -165,7 +195,7 @@ const ProductDetails: React.FC<ProductDeatilsProps> = ({ id, cat_Id }) => {
                 </div>
             </div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "5px" }}>
-                <button onClick={() => setProductsData(null)}>Add</button>
+                <button onClick={handleNewProduct}>Add</button>
                 <button onClick={handleSave }>Save</button>
                 <button onClick={()=>handleDelete(productsData?.id)}>Delete</button>
             </div>

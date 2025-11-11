@@ -38,33 +38,35 @@ namespace Commerce_Project.Server.Controllers
         {
            
             var items =  dbcontext.Products.Where(x=>x.IsDeleted == false).AsQueryable();
-            
-            if (categoryname != null) {
+            if (searchparam != null)
+            {
+                var item = await dbcontext.Products.Where(x => x.IsDeleted == false && x.Name.Contains(searchparam) || x.Brand.Contains(searchparam)).ToListAsync();
+                return Ok(item);
+            }
+
+            else if (categoryname != null)
+            {
                 var record = await dbcontext.Categories.FirstOrDefaultAsync(x => x.Name == categoryname);
                 if (record == null)
                 {
                     return NotFound();
                 }
-                var result = items.Where(x=>x.CategoryId == record.Id).Select(
+                var result = items.Where(x => x.CategoryId == record.Id).Select(
                 x => new ProductDTO
                 {
                     Name = x.Name,
                     Description = x.Description,
                     Price = x.Price,
                     StockQuantity = x.StockQuantity,
-                    Id=x.Id
-                    //Brand = x.Brand,
+                    Id = x.Id,
+                    Brand = x.Brand,
                     //PublishedDate = x.PublishedDate,
                     //Rating = x.Rating,
                     //IsActive = x.IsActive
                 });
                 return Ok(result);
             }
-            else if (searchparam!=null)
-            {
-                var item = await dbcontext.Products.Where(x=> x.IsDeleted == false && x.Name.Contains(searchparam)).ToListAsync();
-                return Ok(item);
-            }
+
             else
             {
                 return Ok(items);

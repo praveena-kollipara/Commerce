@@ -99,6 +99,7 @@ const FindProducts: React.FC<FindProductsProps> = ({ onSelect, onCategorySelect 
 
     const columns: GridColDef<(typeof rows)[number]>[] = [
         { field: 'name', headerName: 'Name', width: 150 },
+        { field: 'brand', headerName: 'Brand', width: 150 },
         { field: 'price', headerName: 'Price', width: 90 },
         { field: 'description', headerName: 'Description', width: 250 }
     ];
