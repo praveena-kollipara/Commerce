@@ -3,7 +3,6 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import logo from "../../assets/logo.png"
 import { useNavigate } from "react-router-dom"
@@ -14,9 +13,8 @@ interface menuItem {
 }
 
 const menuItems = [
-    { name: "Home", path: "/Home" },
-    { name: "Orders", path: "/Orders" },
-    { name: "Cart", path: "/Cart" }
+    { name: "Home", path: "/Home" }
+ 
 ]
 
 interface MainMenuProps {
